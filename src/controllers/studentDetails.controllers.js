@@ -1,17 +1,6 @@
 const mongoose = require('mongoose');
 const StudentArticals = require('../models/studentDetails.models.js')
 
-// validate the student data
-const validateData =  (req, res, next) => {
-    const {studentId,article } = req.body;
-    if(!studentId || !article ){
-        return res.status(404).json({
-            status:"fail",
-            message: "missing student data"});
-         
-    }
-    next();
-}
 
 // add the student data into database
 const addArtical = async (req, res) =>{
@@ -78,11 +67,11 @@ const updateStudentArticle = async (req, res) => {
     const { id } = req.params;
     const { article } = req.body;
     try {
+
         const updatedArticle = await StudentArticals.findByIdAndUpdate(id, { article }, {
             new: true,
             runValidators: true,
         })
-        console.log(updatedArticle)
         if (!updatedArticle) {
             return res.status(404).json({
                 status: 'fail',
@@ -113,7 +102,7 @@ const deleteStudentArticle = async (req, res) => {
                 message: 'Article not found',
             });
         }
-        res.status(204).json({
+        res.status(201).json({
             status: 'success',
             message: 'Article successfully deleted',
         });
@@ -126,4 +115,4 @@ const deleteStudentArticle = async (req, res) => {
 };
 
 
-module.exports = {validateData, addArtical, getStudentArticles, updateStudentArticle, deleteStudentArticle};
+module.exports = {addArtical, getStudentArticles, updateStudentArticle, deleteStudentArticle};
