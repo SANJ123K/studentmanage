@@ -7,6 +7,12 @@ const addCourse = async (req, res) =>{
         
         const { course, duration } = req.body;
         const userId = req.user.id;
+        if(!course || !duration){
+            return res.status(400).json({
+                status:"fail",
+                message: "Required Data is missing",
+            })
+        }
         const enrollment = new enroll({
             studentId: userId,
             course,
